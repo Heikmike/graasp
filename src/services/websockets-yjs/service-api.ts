@@ -98,7 +98,10 @@ const plugin: FastifyPluginAsync<WebsocketsPluginOptions> = async (fastify, opti
 
       wsChannels.clientRegister(client);
 
-      client.on('message', (msg) => wsService.handleRequest(msg, member, client));
+      client.on('message', (msg) => {
+        console.info('received message');
+        wsService.handleRequest(msg, member, client);
+      });
 
       client.on('error', log.error);
 

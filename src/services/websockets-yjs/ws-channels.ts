@@ -328,10 +328,7 @@ class WebSocketChannels {
   broadcast(message): boolean {
     // let ret = true;
     const ret = true;
-    let clientsCount = 0;
     this.wsServer.clients.forEach((client) => {
-      clientsCount++;
-      // ret = ret && this.clientSend(client, message);
       client.send(message);
     });
     return ret;
