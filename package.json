@@ -110,7 +110,8 @@
     "typeorm": "0.3.19",
     "uuid": "9.0.1",
     "ws": "8.13.0",
-    "yazl": "2.5.1"
+    "yazl": "2.5.1",
+    "yjs": "13.6.15"
   },
   "devDependencies": {
     "@commitlint/cli": "17.8.1",

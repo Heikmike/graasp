@@ -11,7 +11,7 @@ import filePlugin from './services/file';
 import ItemServiceApi from './services/item';
 import ItemMembershipServiceApi from './services/itemMembership';
 import MemberServiceApi from './services/member';
-import websocketsPlugin from './services/websockets';
+import websocketsPlugin from './services/websockets-yjs';
 import {
   COOKIE_DOMAIN,
   DATABASE_LOGS,
@@ -64,8 +64,23 @@ export default async function (instance: FastifyInstance): Promise<void> {
     await instance
       // the websockets plugin must be registered before but in the same scope as the apis
       // otherwise tests somehow bypass mocking the authentication through jest.spyOn(app, 'verifyAuthentication')
+      // .register(fp(websocketsPlugin), {
+      //   prefix: '/ws',
+      //   redis: {
+      //     channelName: 'graasp-realtime-updates',
+      //     config: {
+      //       host: REDIS_HOST,
+      //       port: parseInt(REDIS_PORT ?? '6379'),
+      //       username: REDIS_USERNAME,
+      //       password: REDIS_PASSWORD,
+      //     },
+      //   },
+      // })
+      // .register(fp(MemberServiceApi))
+      // .register(fp(ItemServiceApi))
+      // .register(fp(ItemMembershipServiceApi));
       .register(fp(websocketsPlugin), {
-        prefix: '/ws',
+        prefix: '/ws-yjs',
         redis: {
           channelName: 'graasp-realtime-updates',
           config: {

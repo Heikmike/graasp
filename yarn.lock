@@ -6845,6 +6845,7 @@ __metadata:
     wait-for-expect: "npm:3.0.2"
     ws: "npm:8.13.0"
     yazl: "npm:2.5.1"
+    yjs: "npm:13.6.15"
   languageName: unknown
   linkType: soft
 
@@ -7432,6 +7433,13 @@ __metadata:
   version: 3.1.1
   resolution: "isexe@npm:3.1.1"
   checksum: 10/7fe1931ee4e88eb5aa524cd3ceb8c882537bc3a81b02e438b240e47012eef49c86904d0f0e593ea7c3a9996d18d0f1f3be8d3eaa92333977b0c3a9d353d5563e
+  languageName: node
+  linkType: hard
+
+"isomorphic.js@npm:^0.2.4":
+  version: 0.2.5
+  resolution: "isomorphic.js@npm:0.2.5"
+  checksum: 10/d8d1b083f05f3c337a06628b982ac3ce6db953bbef14a9de8ad49131250c3592f864b73c12030fdc9ef138ce97b76ef55c7d96a849561ac215b1b4b9d301c8e9
   languageName: node
   linkType: hard
 
@@ -8209,6 +8217,19 @@ __metadata:
     prelude-ls: "npm:^1.2.1"
     type-check: "npm:~0.4.0"
   checksum: 10/2e4720ff79f21ae08d42374b0a5c2f664c5be8b6c8f565bb4e1315c96ed3a8acaa9de788ffed82d7f2378cf36958573de07ef92336cb5255ed74d08b8318c9ee
+  languageName: node
+  linkType: hard
+
+"lib0@npm:^0.2.86":
+  version: 0.2.94
+  resolution: "lib0@npm:0.2.94"
+  dependencies:
+    isomorphic.js: "npm:^0.2.4"
+  bin:
+    0ecdsa-generate-keypair: bin/0ecdsa-generate-keypair.js
+    0gentesthtml: bin/gentesthtml.js
+    0serve: bin/0serve.js
+  checksum: 10/0df17d71d6ecdadf3379fe80eda5e2a84b34b9e368d164244e3a243aba8226d56f24ba1b25c4eba696846ecca69046b1f178c06d0d6e337ca843a1f8d5dde2ad
   languageName: node
   linkType: hard
 
@@ -12161,6 +12182,15 @@ __metadata:
   dependencies:
     buffer-crc32: "npm:~0.2.3"
   checksum: 10/498ea4c6bca26130608c44db166e2f63b3437b94b7ad020ca0c161268d29517e8517146e91e51b78da100ad62feadc1a1a85aaa94aab0b2dc29b355ec75bc8f0
+  languageName: node
+  linkType: hard
+
+"yjs@npm:13.6.15":
+  version: 13.6.15
+  resolution: "yjs@npm:13.6.15"
+  dependencies:
+    lib0: "npm:^0.2.86"
+  checksum: 10/56fe847bfb8a29e04bd388afef6788fa42513e6b4dece511373ac3a5cf407172d7e208d9414d41b239b550d4d4ffff6dd40883e7928cfcf669879f21fcbba9e8
   languageName: node
   linkType: hard
 
