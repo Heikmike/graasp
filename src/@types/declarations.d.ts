@@ -26,6 +26,7 @@ import { StorageService } from '../services/member/plugins/storage/service';
 import { MemberService } from '../services/member/service';
 import { ThumbnailService } from '../services/thumbnail/service';
 import { WebsocketService } from '../services/websockets/ws-service';
+import { WebsocketServiceYjs } from '../services/websockets-yjs/ws-service';
 import { H5PService } from './services/item/plugins/h5p/service';
 
 declare module 'fastify' {
@@ -85,6 +86,7 @@ declare module 'fastify' {
     storage: { service: StorageService };
 
     websockets: WebsocketService;
+    websocketsyjs: WebsocketServiceYjs;
     h5p: { service: H5PService };
     etherpad: EtherpadItemService;
 

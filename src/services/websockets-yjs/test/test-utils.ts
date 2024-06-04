@@ -14,7 +14,7 @@ import { Websocket } from '@graasp/sdk';
 import { REDIS_HOST } from '../../../utils/config';
 import { AjvMessageSerializer } from '../message-serializer';
 import graaspWebSockets, { WebsocketsPluginOptions } from '../service-api';
-import { WebSocketChannels } from '../ws-channels';
+import { WebSocketChannelsYjs } from '../ws-channels';
 import { mockSessionPreHandler, mockValidateSession } from './mocks';
 
 const clientSerdes = { serialize: JSON.stringify, parse: JSON.parse };
@@ -105,7 +105,7 @@ export function createWsChannels(
  */
 declare module 'fastify' {
   interface FastifyInstance {
-    _debug_websocketsChannels: WebSocketChannels;
+    _debug_websocketsChannelsyjs: WebSocketChannelsYjs;
   }
 }
 

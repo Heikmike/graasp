@@ -94,7 +94,7 @@ class Client {
  * Channels abstraction over WebSocket server
  * Logic to handle clients and channels
  */
-class WebSocketChannels {
+class WebSocketChannelsYjs {
   // Underlying WebSocket server
   wsServer: WebSocket.Server;
   // Collection of existing channels, identified by name for lookup
@@ -342,4 +342,4 @@ class WebSocketChannels {
   }
 }
 
-export { WebSocketChannels };
+export { WebSocketChannelsYjs };

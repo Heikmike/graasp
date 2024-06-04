@@ -13,8 +13,8 @@ import { FastifyBaseLogger, FastifyPluginAsync } from 'fastify';
 
 import { AjvMessageSerializer } from './message-serializer';
 import { MultiInstanceChannelsBroker } from './multi-instance';
-import { WebSocketChannels } from './ws-channels';
-import { WebsocketService } from './ws-service';
+import { WebSocketChannelsYjs } from './ws-channels';
+import { WebsocketServiceYjs } from './ws-service';
 
 /**
  * Type definition for plugin options
@@ -68,20 +68,20 @@ const plugin: FastifyPluginAsync<WebsocketsPluginOptions> = async (fastify, opti
   const serdes = new AjvMessageSerializer();
 
   // create channels abstraction instance
-  const wsChannels = new WebSocketChannels(fastify.websocketServer, serdes.serialize, log);
+  const wsChannels = new WebSocketChannelsYjs(fastify.websocketServer, serdes.serialize, log);
 
   // create multi-instance channels broker
   const wsMultiBroker = new MultiInstanceChannelsBroker(wsChannels, options.redis, log);
 
   // create websockets service
-  const wsService = new WebsocketService(wsChannels, wsMultiBroker, serdes.parse, log);
+  const wsService = new WebsocketServiceYjs(wsChannels, wsMultiBroker, serdes.parse, log);
 
   // decorate server with service
-  fastify.decorate('websockets', wsService);
+  fastify.decorate('websocketsyjs', wsService);
 
   // decorate with debug internals in test mode
   if (process.env.NODE_ENV === 'test') {
-    fastify.decorate('_debug_websocketsChannels', wsChannels);
+    fastify.decorate('_debug_websocketsChannelsyjs', wsChannels);
   }
 
   // handle incoming requests
@@ -89,7 +89,7 @@ const plugin: FastifyPluginAsync<WebsocketsPluginOptions> = async (fastify, opti
   // TODO: remove allow public
   fastify.get(
     options.prefix,
-    { websocket: true, preHandler: fastify.attemptVerifyAuthentication },
+    { websocket: true, preHandler: fastify.verifyBearerAuth },
     (conn, req) => {
       // raw websocket client
       const client = conn.socket;
@@ -98,10 +98,7 @@ const plugin: FastifyPluginAsync<WebsocketsPluginOptions> = async (fastify, opti
 
       wsChannels.clientRegister(client);
 
-      client.on('message', (msg) => {
-        console.info('received message');
-        wsService.handleRequest(msg, member, client);
-      });
+      client.on('message', (msg) => wsService.handleRequest(msg, member, client));
 
       client.on('error', log.error);
 
@@ -122,3 +119,4 @@ const plugin: FastifyPluginAsync<WebsocketsPluginOptions> = async (fastify, opti
 };
 
 export default plugin;
+

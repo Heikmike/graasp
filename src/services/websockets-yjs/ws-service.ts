@@ -34,7 +34,7 @@ type ClientItemId = [string, WebSocket];
  * Provides WebSocket connectivity to the rest of the server
  * @see {WebSocketService}
  */
-export class WebsocketService {
+export class WebsocketServiceYjs {
   // store for validation functions indexed by topic
   private validators: Map<string, ValidationFn> = new Map();
   // channels abstraction reference
