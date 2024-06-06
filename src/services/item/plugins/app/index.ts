@@ -17,10 +17,18 @@ import { createSchema, getMany, updateSchema } from './fluent-schema';
 import common, { generateToken, getContext } from './schemas';
 import { AppService } from './service';
 import { AppsPluginOptions } from './types';
+import websocketsPlugin from '../../../websockets-yjs';
+import {
+  REDIS_HOST,
+  REDIS_PASSWORD,
+  REDIS_PORT,
+  REDIS_USERNAME,
+} from '../../../../utils/config';
 
 const plugin: FastifyPluginAsync<AppsPluginOptions> = async (fastify, options) => {
   const { jwtSecret, jwtExpiration = DEFAULT_JWT_EXPIRATION, publisherId } = options;
 
+  console.log('jwtSecret', jwtSecret);
   if (!jwtSecret) {
     throw new Error('jwtSecret is not defined!');
   }
@@ -68,6 +76,19 @@ const plugin: FastifyPluginAsync<AppsPluginOptions> = async (fastify, options) =
     //   return false;
     // }
   };
+
+  fastify.register(websocketsPlugin, {
+    prefix: '/ws-yjs',
+    redis: {
+      channelName: 'graasp-realtime-updates',
+      config: {
+        host: REDIS_HOST,
+        port: parseInt(REDIS_PORT ?? '6379'),
+        username: REDIS_USERNAME,
+        password: REDIS_PASSWORD,
+      },
+    },
+  });
 
   // bearer token plugin to read and validate token in Bearer header
   /**
