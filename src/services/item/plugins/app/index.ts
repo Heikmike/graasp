@@ -89,6 +89,7 @@ const plugin: FastifyPluginAsync<AppsPluginOptions> = async (fastify, options) =
         password: REDIS_PASSWORD,
       },
     },
+    validateApiAccessToken,
   });
 
   // bearer token plugin to read and validate token in Bearer header

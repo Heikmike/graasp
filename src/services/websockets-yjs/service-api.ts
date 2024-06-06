@@ -25,6 +25,7 @@ export interface WebsocketsPluginOptions {
     config: RedisOptions;
     channelName: string;
   };
+  validateApiAccessToken: any;
 }
 
 /**
@@ -51,6 +52,7 @@ function logBootMessage(log: FastifyBaseLogger, options: WebsocketsPluginOptions
 const plugin: FastifyPluginAsync<WebsocketsPluginOptions> = async (fastify, options) => {
   // destructure passed fastify instance
   const { log } = fastify;
+  const { validateApiAccessToken } = options;
 
   // Serializer / deserializer instance
   const serdes = new AjvMessageSerializer();
@@ -77,8 +79,10 @@ const plugin: FastifyPluginAsync<WebsocketsPluginOptions> = async (fastify, opti
   // TODO: remove allow public
   fastify.get(
     options.prefix,
-    { websocket: true, preHandler: fastify.attemptVerifyAuthentication },
+    { websocket: true },
     (conn, req) => {
+      console.log('token', req.query.authorization);
+      validateApiAccessToken(req.query.authorization, req);
       // raw websocket client
       const client = conn.socket;
       // member from valid session
