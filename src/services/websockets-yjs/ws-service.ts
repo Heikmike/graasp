@@ -143,6 +143,7 @@ export class WebsocketService {
    * @param socket client socket
    */
   handleRequest(data: WebSocket.Data, _1: Actor, _2: WebSocket): void {
+    console.log('request');
     const { messageType, updateYjs } = JSON.parse(data.toString());
 
     switch (messageType) {

@@ -1,4 +1,5 @@
 import { FastifyInstance } from 'fastify';
+import fws from '@fastify/websocket';
 import fp from 'fastify-plugin';
 
 import databasePlugin from './plugins/database';
@@ -30,7 +31,7 @@ import {
   S3_FILE_ITEM_PLUGIN_OPTIONS,
 } from './utils/config';
 
-export default async function (instance: FastifyInstance): Promise<void> {
+export default async function(instance: FastifyInstance): Promise<void> {
   // load some shared schema definitions
   instance.addSchema(shared);
   // file
@@ -62,9 +63,16 @@ export default async function (instance: FastifyInstance): Promise<void> {
   instance.register(async (instance) => {
     // core API modules
     await instance
+      .register(fws, {
+        errorHandler: (error, conn, _req, _reply) => {
+          console.error(`graasp-plugin-websockets: an error occured: ${error}\n\tDestroying connection`);
+          conn.destroy();
+        },
+      })
+
       // the websockets plugin must be registered before but in the same scope as the apis
       // otherwise tests somehow bypass mocking the authentication through jest.spyOn(app, 'verifyAuthentication')
-      .register(websocketsPlugin, {
+      .register(fp(websocketsPlugin), {
         prefix: '/ws',
         redis: {
           channelName: 'graasp-realtime-updates',

@@ -52,18 +52,6 @@ const plugin: FastifyPluginAsync<WebsocketsPluginOptions> = async (fastify, opti
   // destructure passed fastify instance
   const { log } = fastify;
 
-  // must await this register call: otherwise decorated properties on `fastify` are not available
-  await fastify.register(fws, {
-    errorHandler: (error, conn, _req, _reply) => {
-      // remove client if needed
-      if (wsChannels) {
-        wsChannels.clientRemove(conn.socket);
-      }
-      log.error(`graasp-plugin-websockets: an error occured: ${error}\n\tDestroying connection`);
-      conn.destroy();
-    },
-  });
-
   // Serializer / deserializer instance
   const serdes = new AjvMessageSerializer();
 

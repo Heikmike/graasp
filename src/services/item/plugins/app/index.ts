@@ -1,4 +1,5 @@
 import { promisify } from 'util';
+import fp from 'fastify-plugin';
 
 import fastifyBearerAuth from '@fastify/bearer-auth';
 import fastifyCors from '@fastify/cors';
@@ -77,7 +78,7 @@ const plugin: FastifyPluginAsync<AppsPluginOptions> = async (fastify, options) =
     // }
   };
 
-  fastify.register(websocketsPlugin, {
+  fastify.register(fp(websocketsPlugin), {
     prefix: '/ws-yjs',
     redis: {
       channelName: 'graasp-realtime-updates',
