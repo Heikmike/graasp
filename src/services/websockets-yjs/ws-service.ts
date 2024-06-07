@@ -26,6 +26,8 @@ export interface SubscriptionRequest {
 }
 
 type ValidationFn = (request: SubscriptionRequest) => Promise<void>;
+type YjsItemId = [string, Y.Doc];
+type ClientItemId = [string, WebSocket];
 
 /**
  * Concrete implementation of the WebSocket service
@@ -145,8 +147,8 @@ export class WebsocketService {
    * @param member member performing the request
    * @param socket client socket
    */
-  handleRequest(data: WebSocket.Data, member: Actor, clientws: WebSocket): void {
-    const { messageType, updateYjs, itemId, token } = JSON.parse(data.toString());
+  handleRequest(data: WebSocket.Data, _: Actor, clientws: WebSocket): void {
+    const { messageType, updateYjs, itemId } = JSON.parse(data.toString());
     let yjsDoc: Y.Doc;
     const yjsDocTemp = this.yjsDocs.find((doc) => doc[0] === itemId);
     const broadcastClients = this.clients.filter((client) => client[0] === itemId);
