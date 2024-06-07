@@ -43,8 +43,11 @@ export class WebsocketService {
   private parse: (data: WebSocket.Data) => Websocket.ClientMessage | undefined;
   // logger
   private logger: FastifyBaseLogger;
-  // YJS document
-  private yjsDoc: Y.Doc;
+  // YJS documents
+  private yjsDocs: YjsItemId[];
+  // Clients
+  private clients: ClientItemId[];
+
 
   constructor(
     wsChannels: WebSocketChannels,
