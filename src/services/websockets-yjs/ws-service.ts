@@ -61,7 +61,9 @@ export class WebsocketService {
     this.wsMultiBroker = wsMultiBroker;
     this.parse = parse;
     this.logger = log;
-    this.yjsDoc = new Y.Doc();
+    this.yjsDocs = [];
+    this.clients = [];
+
   }
 
   /**
