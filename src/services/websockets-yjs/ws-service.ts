@@ -142,20 +142,41 @@ export class WebsocketService {
    * @param member member performing the request
    * @param socket client socket
    */
-  handleRequest(data: WebSocket.Data, _1: Actor, _2: WebSocket): void {
-    console.log('request');
-    const { messageType, updateYjs } = JSON.parse(data.toString());
+  handleRequest(data: WebSocket.Data, member: Actor, clientws: WebSocket): void {
+    const { messageType, updateYjs, itemId, token } = JSON.parse(data.toString());
+    let yjsDoc: Y.Doc;
+    const yjsDocTemp = this.yjsDocs.find((doc) => doc[0] === itemId);
+    const broadcastClients = this.clients.filter((client) => client[0] === itemId);
+    const thisClient = this.clients.find((client) => client[1] === clientws);
+
+    if (!yjsDocTemp) {
+      yjsDoc = new Y.Doc();
+      this.yjsDocs.push([itemId, yjsDoc]);
+    } else {
+      yjsDoc = yjsDocTemp[1];
+    }
+
+    if (!thisClient) {
+      this.clients.push([itemId, clientws]);
+    }
 
     switch (messageType) {
       case 'update':
         const updateDecoded = Buffer.from(updateYjs, 'base64');
         const update = new Uint8Array(updateDecoded as ArrayBuffer);
-        Y.applyUpdate(this.yjsDoc, update);
-        const newUpdate = Y.encodeStateAsUpdate(this.yjsDoc);
-        this.wsChannels.broadcast(newUpdate);
+        Y.applyUpdate(yjsDoc, update);
+        const newUpdate = Y.encodeStateAsUpdate(yjsDoc);
+        // TODO: Send only to clients from item with itemId,
+        // not to all clients
+        // this.wsChannels.broadcast(newUpdate);
+        if (broadcastClients) {
+          broadcastClients.forEach((client) => {
+            client[1].send(newUpdate);
+          });
+        }
       case 'init':
-        const state = Y.encodeStateAsUpdate(this.yjsDoc);
-        this.wsChannels.broadcast(state);
+        const state = Y.encodeStateAsUpdate(yjsDoc);
+        clientws.send(state);
     }
   }
 
