@@ -81,7 +81,6 @@ const plugin: FastifyPluginAsync<WebsocketsPluginOptions> = async (fastify, opti
     options.prefix,
     { websocket: true },
     (conn, req) => {
-      console.log('token', req.query.authorization);
       validateApiAccessToken(req.query.authorization, req);
       // raw websocket client
       const client = conn.socket;
